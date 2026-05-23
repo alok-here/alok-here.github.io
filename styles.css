@@ -2,31 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Default Theme: Dark Mode */
-  --bg-primary: #08090d;
-  --bg-secondary: #0f111a;
-  --bg-card: rgba(17, 20, 31, 0.7);
-  --border-color: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(0, 240, 255, 0.25);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  
-  --accent-cyan: #00f0ff;
-  --accent-orange: #ff5a00;
-  --accent-green: #39ff14;
-  --accent-glow: rgba(0, 240, 255, 0.25);
-  
-  --grid-line: rgba(0, 240, 255, 0.02);
-  --grid-line-major: rgba(0, 240, 255, 0.06);
-  --nav-bg: rgba(8, 9, 13, 0.75);
-  
-  --font-sans: 'Space Grotesk', -apple-system, sans-serif;
-  --font-mono: 'Fira Code', monospace;
-}
-
-body.light-mode {
-  /* Light Mode Overrides */
+  /* Default Theme: Light Mode */
   --bg-primary: #f8fafc;
   --bg-secondary: #f1f5f9;
   --bg-card: rgba(255, 255, 255, 0.85);
@@ -44,6 +20,30 @@ body.light-mode {
   --grid-line: rgba(2, 132, 199, 0.03);
   --grid-line-major: rgba(2, 132, 199, 0.08);
   --nav-bg: rgba(248, 250, 252, 0.8);
+  
+  --font-sans: 'Space Grotesk', -apple-system, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+body.dark-mode {
+  /* Dark Mode Overrides */
+  --bg-primary: #08090d;
+  --bg-secondary: #0f111a;
+  --bg-card: rgba(17, 20, 31, 0.7);
+  --border-color: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(0, 240, 255, 0.25);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  
+  --accent-cyan: #00f0ff;
+  --accent-orange: #ff5a00;
+  --accent-green: #39ff14;
+  --accent-glow: rgba(0, 240, 255, 0.25);
+  
+  --grid-line: rgba(0, 240, 255, 0.02);
+  --grid-line-major: rgba(0, 240, 255, 0.06);
+  --nav-bg: rgba(8, 9, 13, 0.75);
 }
 
 * {
@@ -168,11 +168,11 @@ body {
 
 .nav-link:hover, .nav-link.active {
   color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(15, 23, 42, 0.05);
 }
 
-body.light-mode .nav-link:hover, body.light-mode .nav-link.active {
-  background-color: rgba(15, 23, 42, 0.05);
+body.dark-mode .nav-link:hover, body.dark-mode .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Theme Toggle Button */
@@ -202,15 +202,18 @@ body.light-mode .nav-link:hover, body.light-mode .nav-link.active {
 }
 
 .theme-toggle-btn .sun-icon {
-  display: none;
-}
-
-body.light-mode .theme-toggle-btn .moon-icon {
-  display: none;
-}
-
-body.light-mode .theme-toggle-btn .sun-icon {
   display: block;
+}
+.theme-toggle-btn .moon-icon {
+  display: none;
+}
+
+body.dark-mode .theme-toggle-btn .moon-icon {
+  display: block;
+}
+
+body.dark-mode .theme-toggle-btn .sun-icon {
+  display: none;
 }
 
 /* Sections Structure */

@@ -8,15 +8,15 @@ let isLightMode = true;
 
 // Read cached theme preference
 if (localStorage.getItem('theme') === 'dark') {
-  document.body.classList.remove('light-mode');
+  document.body.classList.add('dark-mode');
   isLightMode = false;
 } else {
-  document.body.classList.add('light-mode');
+  document.body.classList.remove('dark-mode');
 }
 
 themeToggle.addEventListener('click', () => {
   isLightMode = !isLightMode;
-  document.body.classList.toggle('light-mode', isLightMode);
+  document.body.classList.toggle('dark-mode', !isLightMode);
   localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
   
   // Update WebGL theme colors
