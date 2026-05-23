@@ -85,7 +85,7 @@ function animateSkills() {
 }
 
 // -----------------------------------------------------------------------------
-// THREE.JS 3D ENGINE: 8-CYLINDER RADIAL ENGINE
+// THREE.JS 3D ENGINE: V8 ENGINE CAD SECTION VIEW
 // -----------------------------------------------------------------------------
 let scene, camera, renderer, gridHelper;
 let engineGroup;
@@ -99,6 +99,67 @@ let previousMousePosition = { x: 0, y: 0 };
 const CRANK_RADIUS = 0.6;
 const ROD_LENGTH = 1.8;
 const CYLINDER_COUNT = 8;
+
+// CAD Materials & Outline Helpers
+let matSolidPiston, matLinePiston;
+let matSolidRod, matLineRod;
+let matSolidCrank, matLineCrank;
+let matSolidBlock, matLineBlock;
+let matCenterline, matDim;
+let labelSprite, boreSprite;
+
+function createCadMesh(geometry, solidMat, lineMat) {
+  const group = new THREE.Group();
+  
+  // Solid fill
+  const mesh = new THREE.Mesh(geometry, solidMat);
+  group.add(mesh);
+  
+  // Edges outline
+  const edges = new THREE.EdgesGeometry(geometry);
+  const line = new THREE.LineSegments(edges, lineMat);
+  group.add(line);
+  
+  // Save references for color updates
+  group.mesh = mesh;
+  group.line = line;
+  
+  return group;
+}
+
+function createTextSprite(text, colorStr) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'rgba(0,0,0,0)';
+  ctx.fillRect(0, 0, 128, 64);
+  ctx.fillStyle = colorStr;
+  ctx.font = 'bold 22px "Fira Code", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, 64, 32);
+  
+  const texture = new THREE.CanvasTexture(canvas);
+  const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.scale.set(1.5, 0.75, 1);
+  return sprite;
+}
+
+function updateTextSprite(sprite, text, colorStr) {
+  if (!sprite || !sprite.material || !sprite.material.map) return;
+  const canvas = sprite.material.map.image;
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = colorStr;
+  ctx.font = 'bold 22px "Fira Code", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, 64, 32);
+  sprite.material.map.needsUpdate = true;
+}
 
 function init3D() {
   const container = document.getElementById('canvas3d-container');
@@ -127,90 +188,192 @@ function init3D() {
   gridHelper.position.y = -2.8;
   scene.add(gridHelper);
 
-  // Materials (Cyan and Orange wireframes)
-  const matCyan = new THREE.MeshBasicMaterial({ 
-    color: isLightMode ? 0x0284c7 : 0x00f0ff, 
-    wireframe: true, 
-    transparent: true, 
-    opacity: 0.75 
+  // Colors based on theme
+  const fillCol = isLightMode ? 0xffffff : 0x11131c;
+  const linePistonCol = isLightMode ? 0x0284c7 : 0x00f0ff;
+  const lineCrankCol = isLightMode ? 0xea580c : 0xff5a00;
+  const lineBlockCol = isLightMode ? 0x475569 : 0x94a3b8;
+  const dimCol = isLightMode ? 0xea580c : 0xff5a00;
+  const centerlineCol = isLightMode ? 0x94a3b8 : 0x475569;
+
+  // Initialize CAD Materials
+  matSolidPiston = new THREE.MeshBasicMaterial({ 
+    color: fillCol, 
+    polygonOffset: true, 
+    polygonOffsetFactor: 1, 
+    polygonOffsetUnits: 1 
   });
-  const matOrange = new THREE.MeshBasicMaterial({ 
-    color: isLightMode ? 0xea580c : 0xff5a00, 
-    wireframe: true, 
-    transparent: true, 
-    opacity: 0.85 
+  matLinePiston = new THREE.LineBasicMaterial({ color: linePistonCol });
+
+  matSolidRod = new THREE.MeshBasicMaterial({ 
+    color: fillCol, 
+    polygonOffset: true, 
+    polygonOffsetFactor: 1, 
+    polygonOffsetUnits: 1 
   });
-  const matGrey = new THREE.MeshBasicMaterial({ 
-    color: 0x64748b, 
-    wireframe: true, 
-    transparent: true, 
-    opacity: 0.4 
+  matLineRod = new THREE.LineBasicMaterial({ color: linePistonCol });
+
+  matSolidCrank = new THREE.MeshBasicMaterial({ 
+    color: fillCol, 
+    polygonOffset: true, 
+    polygonOffsetFactor: 1, 
+    polygonOffsetUnits: 1 
   });
+  matLineCrank = new THREE.LineBasicMaterial({ color: lineCrankCol });
+
+  matSolidBlock = new THREE.MeshBasicMaterial({ 
+    color: fillCol, 
+    polygonOffset: true, 
+    polygonOffsetFactor: 1, 
+    polygonOffsetUnits: 1 
+  });
+  matLineBlock = new THREE.LineBasicMaterial({ color: lineBlockCol });
+
+  matCenterline = new THREE.LineDashedMaterial({
+    color: centerlineCol,
+    dashSize: 0.15,
+    gapSize: 0.08,
+    scale: 1
+  });
+
+  matDim = new THREE.LineBasicMaterial({ color: dimCol });
 
   engineGroup = new THREE.Group();
   scene.add(engineGroup);
 
-  // 1. Static V8 Engine Block: 8 cylinder housings & bank covers
-  const beta_L = 3 * Math.PI / 4; // Left bank angle: 135 degrees (pointing up-left)
-  const beta_R = Math.PI / 4;     // Right bank angle: 45 degrees (pointing up-right)
+  // 1. Static V8 Engine Block: Section view (180 deg cut cylinders & bank covers)
+  const beta_L = 3 * Math.PI / 4; // Left bank angle: 135 degrees
+  const beta_R = Math.PI / 4;     // Right bank angle: 45 degrees
 
   for (let i = 0; i < CYLINDER_COUNT; i++) {
-    const j = Math.floor(i / 2); // Crankpin bay index (0 to 3)
+    const j = Math.floor(i / 2); // Bay index
     const isLeft = (i % 2 === 0);
     const beta = isLeft ? beta_L : beta_R;
     const zPos = -1.8 + j * 1.2 + (isLeft ? -0.15 : 0.15);
 
-    // Cylinder housing mesh
-    const cylHousingGeo = new THREE.CylinderGeometry(0.35, 0.35, 1.8, 8, 2, true);
-    const cyl = new THREE.Mesh(cylHousingGeo, matGrey);
+    // Section cylinder housing (180 deg thetaLength to make it cut in half)
+    const cylHousingGeo = new THREE.CylinderGeometry(0.35, 0.35, 1.8, 12, 1, true, -Math.PI / 2, Math.PI);
+    const cyl = createCadMesh(cylHousingGeo, matSolidBlock, matLineBlock);
     
-    // Position outer cylinders radial to center along Z
     cyl.position.set(Math.cos(beta) * 1.7, Math.sin(beta) * 1.7, zPos);
-    cyl.rotation.z = beta - Math.PI / 2; // Orient along V angle
+    cyl.rotation.z = beta - Math.PI / 2;
     
     engineGroup.add(cyl);
   }
 
-  // Cylinder Head Valve Covers
+  // Cylinder Head Valve Covers (rectangular plates cut in half or sectioned)
   const coverGeo = new THREE.BoxGeometry(0.7, 0.15, 4.4);
   
   // Left Valve Cover
-  const leftCover = new THREE.Mesh(coverGeo, matGrey);
+  const leftCover = createCadMesh(coverGeo, matSolidBlock, matLineBlock);
   leftCover.position.set(Math.cos(beta_L) * 2.6, Math.sin(beta_L) * 2.6, 0);
   leftCover.rotation.z = beta_L - Math.PI / 2;
   engineGroup.add(leftCover);
 
   // Right Valve Cover
-  const rightCover = new THREE.Mesh(coverGeo, matGrey);
+  const rightCover = createCadMesh(coverGeo, matSolidBlock, matLineBlock);
   rightCover.position.set(Math.cos(beta_R) * 2.6, Math.sin(beta_R) * 2.6, 0);
   rightCover.rotation.z = beta_R - Math.PI / 2;
   engineGroup.add(rightCover);
+
+  // 1.5. CAD Centerlines for Cylinders
+  for (let i = 0; i < CYLINDER_COUNT; i++) {
+    const j = Math.floor(i / 2);
+    const isLeft = (i % 2 === 0);
+    const beta = isLeft ? beta_L : beta_R;
+    const zPos = -1.8 + j * 1.2 + (isLeft ? -0.15 : 0.15);
+
+    const points = [];
+    points.push(new THREE.Vector3(0, 0, zPos));
+    points.push(new THREE.Vector3(Math.cos(beta) * 3.0, Math.sin(beta) * 3.0, zPos));
+    
+    const centerlineGeo = new THREE.BufferGeometry().setFromPoints(points);
+    const centerline = new THREE.Line(centerlineGeo, matCenterline);
+    centerline.computeLineDistances();
+    engineGroup.add(centerline);
+  }
+
+  // 1.6. CAD Dimension Annotations
+  // V-Angle Dimension Arc
+  const arcCurve = new THREE.EllipseCurve(
+    0, 0,             // Center
+    1.2, 1.2,         // X/Y radius
+    Math.PI / 4, 3 * Math.PI / 4, // Start/End angle
+    false,            // Clockwise
+    0                 // Rotation
+  );
+  const arcPoints = arcCurve.getPoints(24).map(p => new THREE.Vector3(p.x, p.y, 2.0));
+  const arcGeo = new THREE.BufferGeometry().setFromPoints(arcPoints);
+  const arcLine = new THREE.Line(arcGeo, matDim);
+  engineGroup.add(arcLine);
+
+  // Dimension Extension Lines
+  const extLPoints = [new THREE.Vector3(0, 0, 2.0), new THREE.Vector3(Math.cos(beta_L) * 1.3, Math.sin(beta_L) * 1.3, 2.0)];
+  const extLGeo = new THREE.BufferGeometry().setFromPoints(extLPoints);
+  const extLLine = new THREE.Line(extLGeo, matDim);
+  engineGroup.add(extLLine);
+
+  const extRPoints = [new THREE.Vector3(0, 0, 2.0), new THREE.Vector3(Math.cos(beta_R) * 1.3, Math.sin(beta_R) * 1.3, 2.0)];
+  const extRGeo = new THREE.BufferGeometry().setFromPoints(extRPoints);
+  const extRLine = new THREE.Line(extRGeo, matDim);
+  engineGroup.add(extRLine);
+
+  // Arrow Heads for V-Angle Dimension Arc
+  const arrowGeo = new THREE.ConeGeometry(0.04, 0.12, 4);
+  
+  const arrowL = new THREE.Mesh(arrowGeo, matDim);
+  arrowL.position.set(Math.cos(beta_L) * 1.2, Math.sin(beta_L) * 1.2, 2.0);
+  arrowL.rotation.z = beta_L - Math.PI / 2;
+  engineGroup.add(arrowL);
+
+  const arrowR = new THREE.Mesh(arrowGeo, matDim);
+  arrowR.position.set(Math.cos(beta_R) * 1.2, Math.sin(beta_R) * 1.2, 2.0);
+  arrowR.rotation.z = beta_R + Math.PI / 2;
+  engineGroup.add(arrowR);
+
+  // Text sprites
+  labelSprite = createTextSprite('90.0°', isLightMode ? '#ea580c' : '#ff5a00');
+  labelSprite.position.set(0, 1.4, 2.0);
+  engineGroup.add(labelSprite);
+
+  boreSprite = createTextSprite('Bore: 56mm', isLightMode ? '#0284c7' : '#00f0ff');
+  boreSprite.position.set(Math.cos(beta_R) * 2.5 + 0.6, Math.sin(beta_R) * 2.5 + 0.2, 0.6);
+  engineGroup.add(boreSprite);
+
+  // Bore Dimension Line
+  const boreLinePoints = [
+    new THREE.Vector3(Math.cos(beta_R) * 2.5, Math.sin(beta_R) * 2.5, 0.6), 
+    new THREE.Vector3(Math.cos(beta_R) * 2.5 + 0.3, Math.sin(beta_R) * 2.5 + 0.1, 0.6)
+  ];
+  const boreLineGeo = new THREE.BufferGeometry().setFromPoints(boreLinePoints);
+  const boreLine = new THREE.Line(boreLineGeo, matDim);
+  engineGroup.add(boreLine);
 
   // 2. Rotating Crankshaft Assembly
   crankshaftAssembly = new THREE.Group();
 
   // Central crankshaft core shaft
   const mainShaftGeo = new THREE.CylinderGeometry(0.15, 0.15, 4.6, 12);
-  const mainShaft = new THREE.Mesh(mainShaftGeo, matOrange);
+  const mainShaft = createCadMesh(mainShaftGeo, matSolidCrank, matLineCrank);
   mainShaft.rotation.x = Math.PI / 2;
   crankshaftAssembly.add(mainShaft);
 
   // Heavy Flywheel at the back
   const flywheelGeo = new THREE.CylinderGeometry(0.9, 0.9, 0.25, 16);
-  const flywheel = new THREE.Mesh(flywheelGeo, matOrange);
+  const flywheel = createCadMesh(flywheelGeo, matSolidCrank, matLineCrank);
   flywheel.position.z = -2.3;
   flywheel.rotation.x = Math.PI / 2;
   crankshaftAssembly.add(flywheel);
 
   // Front Pulley
   const pulleyGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.2, 12);
-  const pulley = new THREE.Mesh(pulleyGeo, matOrange);
+  const pulley = createCadMesh(pulleyGeo, matSolidCrank, matLineCrank);
   pulley.position.z = 2.3;
   pulley.rotation.x = Math.PI / 2;
   crankshaftAssembly.add(pulley);
 
   // Add 4 sets of Webs and Crankpins (Crossplane V8 layout)
-  const webGeo = new THREE.BoxGeometry(0.2, CRANK_RADIUS + 0.2, 0.12);
+  const webGeo = new THREE.BoxGeometry(0.18, CRANK_RADIUS + 0.15, 0.12);
   const pinGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.7, 8);
   const phases = [0, Math.PI / 2, 3 * Math.PI / 2, Math.PI];
 
@@ -222,19 +385,19 @@ function init3D() {
     const pinY = Math.sin(phase) * CRANK_RADIUS;
 
     // Web 1
-    const web1 = new THREE.Mesh(webGeo, matOrange);
+    const web1 = createCadMesh(webGeo, matSolidCrank, matLineCrank);
     web1.position.set(pinX / 2, pinY / 2, Z_j - 0.35);
     web1.rotation.z = phase - Math.PI / 2;
     crankshaftAssembly.add(web1);
 
     // Web 2
-    const web2 = new THREE.Mesh(webGeo, matOrange);
+    const web2 = createCadMesh(webGeo, matSolidCrank, matLineCrank);
     web2.position.set(pinX / 2, pinY / 2, Z_j + 0.35);
     web2.rotation.z = phase - Math.PI / 2;
     crankshaftAssembly.add(web2);
 
     // Crankpin
-    const pin = new THREE.Mesh(pinGeo, matOrange);
+    const pin = createCadMesh(pinGeo, matSolidCrank, matLineCrank);
     pin.position.set(pinX, pinY, Z_j);
     pin.rotation.x = Math.PI / 2;
     crankshaftAssembly.add(pin);
@@ -243,16 +406,17 @@ function init3D() {
   engineGroup.add(crankshaftAssembly);
 
   // 3. Pistons & Connecting Rods
+  // Piston geometry: 180 degree half-cylinder so we can see the internal section
+  const pistonGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.4, 12, 1, false, -Math.PI / 2, Math.PI);
+  // Rod geometry: Rectangular CAD outline bar
+  const rodGeo = new THREE.BoxGeometry(0.08, 1.0, 0.08);
+
   for (let i = 0; i < CYLINDER_COUNT; i++) {
-    // Piston mesh
-    const pistonGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.4, 8);
-    const piston = new THREE.Mesh(pistonGeo, matCyan);
+    const piston = createCadMesh(pistonGeo, matSolidPiston, matLinePiston);
     engineGroup.add(piston);
     pistons.push(piston);
 
-    // Rod mesh
-    const rodGeo = new THREE.CylinderGeometry(0.045, 0.045, 1.0, 6);
-    const rod = new THREE.Mesh(rodGeo, matCyan);
+    const rod = createCadMesh(rodGeo, matSolidRod, matLineRod);
     engineGroup.add(rod);
     rods.push(rod);
   }
@@ -280,7 +444,7 @@ function init3D() {
       const theta_pin = theta + phases[j];
       const delta = theta_pin - beta;
 
-      // Distance from crank center to piston wrist pin along cylinder bank axis
+      // Distance along bank axis
       const term1 = CRANK_RADIUS * Math.cos(delta);
       const term2 = Math.sqrt(Math.max(0.1, ROD_LENGTH * ROD_LENGTH - CRANK_RADIUS * CRANK_RADIUS * Math.sin(delta) * Math.sin(delta)));
       const dist = term1 + term2;
@@ -293,7 +457,7 @@ function init3D() {
       pistons[i].position.set(px, py, pz);
       pistons[i].rotation.z = beta - Math.PI / 2;
 
-      // Crankpin coordinates (absolute space relative to rotation angle)
+      // Crankpin absolute coordinates
       const cx = Math.cos(theta_pin) * CRANK_RADIUS;
       const cy = Math.sin(theta_pin) * CRANK_RADIUS;
       const cz = zPos;
@@ -310,7 +474,7 @@ function init3D() {
       const actualDist = Math.sqrt(dx * dx + dy * dy);
       rods[i].scale.set(1, actualDist, 1);
 
-      // Orient rod to line up between crankpin and piston pin
+      // Orient rod
       const rodAngle = Math.atan2(dy, dx);
       rods[i].rotation.z = rodAngle - Math.PI / 2;
     }
@@ -319,7 +483,7 @@ function init3D() {
   }
   animate();
 
-  // Mouse interaction to rotate view
+  // Mouse interaction
   const canvasEl = renderer.domElement;
   canvasEl.addEventListener('mousedown', (e) => {
     isDragging = true;
@@ -373,21 +537,31 @@ function updateThreeTheme() {
   scene.add(gridHelper);
 
   // Update mechanical parts colors
-  const matColorCyan = isLightMode ? 0x0284c7 : 0x00f0ff;
-  const matColorOrange = isLightMode ? 0xea580c : 0xff5a00;
+  const fillCol = isLightMode ? 0xffffff : 0x11131c;
+  const linePistonCol = isLightMode ? 0x0284c7 : 0x00f0ff;
+  const lineCrankCol = isLightMode ? 0xea580c : 0xff5a00;
+  const lineBlockCol = isLightMode ? 0x475569 : 0x94a3b8;
+  const dimCol = isLightMode ? 0xea580c : 0xff5a00;
+  const centerlineCol = isLightMode ? 0x94a3b8 : 0x475569;
 
-  pistons.forEach(p => {
-    p.material.color.setHex(matColorCyan);
-  });
-  rods.forEach(r => {
-    r.material.color.setHex(matColorCyan);
-  });
-  
-  crankshaftAssembly.children.forEach(child => {
-    if (child.material) {
-      child.material.color.setHex(matColorOrange);
-    }
-  });
+  matSolidPiston.color.setHex(fillCol);
+  matLinePiston.color.setHex(linePistonCol);
+
+  matSolidRod.color.setHex(fillCol);
+  matLineRod.color.setHex(linePistonCol);
+
+  matSolidCrank.color.setHex(fillCol);
+  matLineCrank.color.setHex(lineCrankCol);
+
+  matSolidBlock.color.setHex(fillCol);
+  matLineBlock.color.setHex(lineBlockCol);
+
+  matCenterline.color.setHex(centerlineCol);
+  matDim.color.setHex(dimCol);
+
+  // Update canvas sprites
+  updateTextSprite(labelSprite, '90.0°', isLightMode ? '#ea580c' : '#ff5a00');
+  updateTextSprite(boreSprite, 'Bore: 56mm', isLightMode ? '#0284c7' : '#00f0ff');
 }
 
 // -----------------------------------------------------------------------------
