@@ -91,13 +91,13 @@ let scene, camera, renderer, gridHelper;
 let engineGroup;
 let pistons = [];
 let rods = [];
-let crankpinMesh;
+let crankshaftAssembly;
 let isDragging = false;
 let previousMousePosition = { x: 0, y: 0 };
 
 // Engine dimensions
-const CRANK_RADIUS = 0.9;
-const ROD_LENGTH = 2.4;
+const CRANK_RADIUS = 0.6;
+const ROD_LENGTH = 1.8;
 const CYLINDER_COUNT = 8;
 
 function init3D() {
@@ -150,56 +150,108 @@ function init3D() {
   engineGroup = new THREE.Group();
   scene.add(engineGroup);
 
-  // 1. Static Cylinders (8 housings pointing outward)
+  // 1. Static V8 Engine Block: 8 cylinder housings & bank covers
+  const beta_L = 3 * Math.PI / 4; // Left bank angle: 135 degrees (pointing up-left)
+  const beta_R = Math.PI / 4;     // Right bank angle: 45 degrees (pointing up-right)
+
   for (let i = 0; i < CYLINDER_COUNT; i++) {
-    const angle = (i / CYLINDER_COUNT) * Math.PI * 2;
-    
+    const j = Math.floor(i / 2); // Crankpin bay index (0 to 3)
+    const isLeft = (i % 2 === 0);
+    const beta = isLeft ? beta_L : beta_R;
+    const zPos = -1.8 + j * 1.2 + (isLeft ? -0.15 : 0.15);
+
     // Cylinder housing mesh
-    const cylHousingGeo = new THREE.CylinderGeometry(0.38, 0.38, 1.6, 8, 2, true);
+    const cylHousingGeo = new THREE.CylinderGeometry(0.35, 0.35, 1.8, 8, 2, true);
     const cyl = new THREE.Mesh(cylHousingGeo, matGrey);
     
-    // Position outer cylinders radial to center
-    cyl.position.x = Math.cos(angle) * 2.8;
-    cyl.position.y = Math.sin(angle) * 2.8;
-    cyl.rotation.z = angle - Math.PI / 2; // Point outwards
+    // Position outer cylinders radial to center along Z
+    cyl.position.set(Math.cos(beta) * 1.7, Math.sin(beta) * 1.7, zPos);
+    cyl.rotation.z = beta - Math.PI / 2; // Orient along V angle
     
     engineGroup.add(cyl);
   }
 
-  // 2. Crankshaft Center Pin & Crank Arm
-  const crankGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.4, 8);
-  const crankCenter = new THREE.Mesh(crankGeo, matOrange);
-  crankCenter.rotation.x = Math.PI / 2;
-  engineGroup.add(crankCenter);
-
-  // Crank Arm (connecting center pin to crankpin)
-  const armGeo = new THREE.BoxGeometry(0.25, CRANK_RADIUS, 0.15);
-  const crankArm = new THREE.Mesh(armGeo, matOrange);
-  crankArm.position.y = CRANK_RADIUS / 2;
+  // Cylinder Head Valve Covers
+  const coverGeo = new THREE.BoxGeometry(0.7, 0.15, 4.4);
   
-  // Rotating crankshaft group
-  const crankshaftAssembly = new THREE.Group();
-  crankshaftAssembly.add(crankArm);
+  // Left Valve Cover
+  const leftCover = new THREE.Mesh(coverGeo, matGrey);
+  leftCover.position.set(Math.cos(beta_L) * 2.6, Math.sin(beta_L) * 2.6, 0);
+  leftCover.rotation.z = beta_L - Math.PI / 2;
+  engineGroup.add(leftCover);
 
-  // Crankpin
-  const pinGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.4, 8);
-  crankpinMesh = new THREE.Mesh(pinGeo, matOrange);
-  crankpinMesh.position.y = CRANK_RADIUS;
-  crankpinMesh.rotation.x = Math.PI / 2;
-  crankshaftAssembly.add(crankpinMesh);
+  // Right Valve Cover
+  const rightCover = new THREE.Mesh(coverGeo, matGrey);
+  rightCover.position.set(Math.cos(beta_R) * 2.6, Math.sin(beta_R) * 2.6, 0);
+  rightCover.rotation.z = beta_R - Math.PI / 2;
+  engineGroup.add(rightCover);
+
+  // 2. Rotating Crankshaft Assembly
+  crankshaftAssembly = new THREE.Group();
+
+  // Central crankshaft core shaft
+  const mainShaftGeo = new THREE.CylinderGeometry(0.15, 0.15, 4.6, 12);
+  const mainShaft = new THREE.Mesh(mainShaftGeo, matOrange);
+  mainShaft.rotation.x = Math.PI / 2;
+  crankshaftAssembly.add(mainShaft);
+
+  // Heavy Flywheel at the back
+  const flywheelGeo = new THREE.CylinderGeometry(0.9, 0.9, 0.25, 16);
+  const flywheel = new THREE.Mesh(flywheelGeo, matOrange);
+  flywheel.position.z = -2.3;
+  flywheel.rotation.x = Math.PI / 2;
+  crankshaftAssembly.add(flywheel);
+
+  // Front Pulley
+  const pulleyGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.2, 12);
+  const pulley = new THREE.Mesh(pulleyGeo, matOrange);
+  pulley.position.z = 2.3;
+  pulley.rotation.x = Math.PI / 2;
+  crankshaftAssembly.add(pulley);
+
+  // Add 4 sets of Webs and Crankpins (Crossplane V8 layout)
+  const webGeo = new THREE.BoxGeometry(0.2, CRANK_RADIUS + 0.2, 0.12);
+  const pinGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.7, 8);
+  const phases = [0, Math.PI / 2, 3 * Math.PI / 2, Math.PI];
+
+  for (let j = 0; j < 4; j++) {
+    const Z_j = -1.8 + j * 1.2;
+    const phase = phases[j];
+
+    const pinX = Math.cos(phase) * CRANK_RADIUS;
+    const pinY = Math.sin(phase) * CRANK_RADIUS;
+
+    // Web 1
+    const web1 = new THREE.Mesh(webGeo, matOrange);
+    web1.position.set(pinX / 2, pinY / 2, Z_j - 0.35);
+    web1.rotation.z = phase - Math.PI / 2;
+    crankshaftAssembly.add(web1);
+
+    // Web 2
+    const web2 = new THREE.Mesh(webGeo, matOrange);
+    web2.position.set(pinX / 2, pinY / 2, Z_j + 0.35);
+    web2.rotation.z = phase - Math.PI / 2;
+    crankshaftAssembly.add(web2);
+
+    // Crankpin
+    const pin = new THREE.Mesh(pinGeo, matOrange);
+    pin.position.set(pinX, pinY, Z_j);
+    pin.rotation.x = Math.PI / 2;
+    crankshaftAssembly.add(pin);
+  }
 
   engineGroup.add(crankshaftAssembly);
 
   // 3. Pistons & Connecting Rods
   for (let i = 0; i < CYLINDER_COUNT; i++) {
-    // Piston
-    const pistonGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.5, 8);
+    // Piston mesh
+    const pistonGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.4, 8);
     const piston = new THREE.Mesh(pistonGeo, matCyan);
     engineGroup.add(piston);
     pistons.push(piston);
 
-    // Rod (represented by lines / boxes)
-    const rodGeo = new THREE.CylinderGeometry(0.04, 0.04, 1.0, 6);
+    // Rod mesh
+    const rodGeo = new THREE.CylinderGeometry(0.045, 0.045, 1.0, 6);
     const rod = new THREE.Mesh(rodGeo, matCyan);
     engineGroup.add(rod);
     rods.push(rod);
@@ -212,49 +264,53 @@ function init3D() {
 
     if (!isDragging) {
       engineGroup.rotation.y += 0.004;
-      time += 0.025; // Crankshaft rotation increment
+      time += 0.025; // Crank rotation increment
     }
 
-    // Crank rotation angle
     const theta = time;
     crankshaftAssembly.rotation.z = theta;
 
-    // Position of crankpin in global space of engineGroup
-    const pinX = Math.cos(theta) * CRANK_RADIUS;
-    const pinY = Math.sin(theta) * CRANK_RADIUS;
-
-    // Update pistons & rods
+    // Update V8 cylinders kinematics
     for (let i = 0; i < CYLINDER_COUNT; i++) {
-      const phi = (i / CYLINDER_COUNT) * Math.PI * 2; // Cylinder axis angle
+      const j = Math.floor(i / 2); // Bay index
+      const isLeft = (i % 2 === 0);
+      const beta = isLeft ? beta_L : beta_R;
+      const zPos = -1.8 + j * 1.2 + (isLeft ? -0.15 : 0.15);
 
-      // Sliding piston formula: distance from crankshaft center along cylinder axis (phi)
-      // d = R*cos(theta - phi) + sqrt(L^2 - R^2 * sin^2(theta - phi))
-      const deltaAngle = theta - phi;
-      const term1 = CRANK_RADIUS * Math.cos(deltaAngle);
-      const term2 = Math.sqrt(Math.max(0.1, ROD_LENGTH * ROD_LENGTH - CRANK_RADIUS * CRANK_RADIUS * Math.sin(deltaAngle) * Math.sin(deltaAngle)));
+      const theta_pin = theta + phases[j];
+      const delta = theta_pin - beta;
+
+      // Distance from crank center to piston wrist pin along cylinder bank axis
+      const term1 = CRANK_RADIUS * Math.cos(delta);
+      const term2 = Math.sqrt(Math.max(0.1, ROD_LENGTH * ROD_LENGTH - CRANK_RADIUS * CRANK_RADIUS * Math.sin(delta) * Math.sin(delta)));
       const dist = term1 + term2;
 
       // Piston coordinates
-      const px = Math.cos(phi) * dist;
-      const py = Math.sin(phi) * dist;
+      const px = Math.cos(beta) * dist;
+      const py = Math.sin(beta) * dist;
+      const pz = zPos;
 
-      // Position & Orient piston
-      pistons[i].position.set(px, py, 0);
-      pistons[i].rotation.z = phi - Math.PI / 2;
+      pistons[i].position.set(px, py, pz);
+      pistons[i].rotation.z = beta - Math.PI / 2;
 
-      // Connecting Rod position (between crankpin and piston pin)
-      // Rod center is midpoint
-      const rx = (pinX + px) / 2;
-      const ry = (pinY + py) / 2;
-      rods[i].position.set(rx, ry, 0);
+      // Crankpin coordinates (absolute space relative to rotation angle)
+      const cx = Math.cos(theta_pin) * CRANK_RADIUS;
+      const cy = Math.sin(theta_pin) * CRANK_RADIUS;
+      const cz = zPos;
 
-      // Rod length (should match actual distance between crankpin and piston center)
-      const dx = px - pinX;
-      const dy = py - pinY;
+      // Connecting Rod midpoint
+      const rx = (cx + px) / 2;
+      const ry = (cy + py) / 2;
+      const rz = zPos;
+      rods[i].position.set(rx, ry, rz);
+
+      // Scale rod length dynamically
+      const dx = px - cx;
+      const dy = py - cy;
       const actualDist = Math.sqrt(dx * dx + dy * dy);
       rods[i].scale.set(1, actualDist, 1);
 
-      // Orient rod to look at piston position from crankpin position
+      // Orient rod to line up between crankpin and piston pin
       const rodAngle = Math.atan2(dy, dx);
       rods[i].rotation.z = rodAngle - Math.PI / 2;
     }
@@ -326,7 +382,12 @@ function updateThreeTheme() {
   rods.forEach(r => {
     r.material.color.setHex(matColorCyan);
   });
-  crankpinMesh.material.color.setHex(matColorOrange);
+  
+  crankshaftAssembly.children.forEach(child => {
+    if (child.material) {
+      child.material.color.setHex(matColorOrange);
+    }
+  });
 }
 
 // -----------------------------------------------------------------------------
