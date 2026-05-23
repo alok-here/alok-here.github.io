@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Alok Kumar - CAD Designer & Mechanical Engineering Portfolio. Professional 2D Drafting and 3D Assembly Modeling using SolidWorks and AutoCAD.">
+  <title>Alok Kumar | CAD Designer Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background CAD Grid -->
+  <div class="grid-overlay"></div>
+
+  <!-- Floating Glass Navbar -->
+  <header class="navbar">
+    <a href="#home" class="logo">ALOK_KUMAR<span>.dwg</span></a>
+    
+    <nav class="nav-links">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#about" class="nav-link">Profile</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#sandbox" class="nav-link">Playground</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+
+    <!-- Dark/Light Toggle Button -->
+    <button class="theme-toggle-btn" id="theme-toggle" title="Toggle Light/Dark Theme">
+      <!-- Sun Icon -->
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <!-- Moon Icon -->
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+  </header>
+
+  <!-- SECTION 1: HERO -->
+  <section class="hero-section" id="home">
+    <div class="hero-text-side">
+      <div class="hero-badge">System Status: Active</div>
+      <h1>CAD Designer &<br><span>Mechanical Engineer</span></h1>
+      <p class="hero-subtitle">Turning sketches into manufactured reality.</p>
+      <p class="hero-desc">
+        Specializing in 2D technical drafting, 3D parametric assemblies, and physical component inspections. Proficient in AutoCAD and SolidWorks to deliver precise drawings with proper fit tolerances.
+      </p>
+      <div class="hero-ctas">
+        <a href="#sandbox" class="btn btn-primary">Try Drafting Sandbox</a>
+        <a href="#contact" class="btn btn-secondary">Request RFQ</a>
+      </div>
+    </div>
+    <div class="hero-canvas-side">
+      <div class="canvas-hint">3D 8-CYLINDER RADIAL ROTARY ENGINE [DRAG TO ROTATE / SCROLL TO ZOOM]</div>
+      <div id="canvas3d-container"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ABOUT / SPEC SHEET -->
+  <section id="about">
+    <div class="section-header">
+      <div class="section-label">Engineering Specs</div>
+      <h2 class="section-title">Profile Datasheet</h2>
+    </div>
+    
+    <div class="about-grid">
+      <!-- Left Column: Datasheet -->
+      <div class="about-card">
+        <div class="about-card-title">Technical Specifications</div>
+        <table class="tech-spec-table">
+          <tr>
+            <td class="label">LOCATION</td>
+            <td class="value">New Delhi, India</td>
+          </tr>
+          <tr>
+            <td class="label">D.O.B.</td>
+            <td class="value">28 / 07 / 2000</td>
+          </tr>
+          <tr>
+            <td class="label">LANGUAGES</td>
+            <td class="value">English, Hindi</td>
+          </tr>
+          <tr>
+            <td class="label">FATHER'S NAME</td>
+            <td class="value">Shyam Singh</td>
+          </tr>
+          <tr>
+            <td class="label">PRIMARY CAD</td>
+            <td class="value">SolidWorks, AutoCAD</td>
+          </tr>
+          <tr>
+            <td class="label">OTHER SUITES</td>
+            <td class="value">Adobe Illustrator, Canva, MS Office</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Right Column: Personal Profile Bio -->
+      <div class="about-card" style="display: flex; flex-direction: column; justify-content: center;">
+        <div class="about-card-title">System Overview</div>
+        <div class="about-bio-text">
+          <p>
+            Enthusiastic and detail-oriented mechanical design trainee. Built on a solid theoretical background and hands-on shop fabrication experience, I specialize in translating complex design ideas into accurate CAD layouts.
+          </p>
+          <p>
+            With training in mechanical fitter trades, I understand the practicalities of metal fitting, machine assembly, and tolerance constraints. I am highly motivated to work on manufacturing-driven CAD design contracts and full-time assemblies.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Education Timeline -->
+    <div class="section-header" style="margin-top: 60px; margin-bottom: 30px;">
+      <div class="section-label">Process Node</div>
+      <h2 class="section-title">Education Register</h2>
+    </div>
+
+    <div class="edu-timeline">
+      <!-- Diploma -->
+      <div class="edu-timeline-card">
+        <div class="edu-date">Completed 2025</div>
+        <div class="edu-degree">Diploma in Mechanical Engineering</div>
+        <div class="edu-inst">Pusa Institute of Technology, New Delhi</div>
+        <div class="edu-desc">Coursework in CAD Design, mechanical components, solid mechanics, and fabrication shop practices.</div>
+      </div>
+      <!-- ITI -->
+      <div class="edu-timeline-card">
+        <div class="edu-date">2021 - 2023</div>
+        <div class="edu-degree">ITI Trade Certificate (Fitter)</div>
+        <div class="edu-inst">ITI Jail Road, New Delhi</div>
+        <div class="edu-desc">Intense practical shop training in structural assembly, metal fitting, and micrometer/caliper measurements.</div>
+      </div>
+      <!-- Graduation -->
+      <div class="edu-timeline-card">
+        <div class="edu-date">Pursuing</div>
+        <div class="edu-degree">Graduation (BAG)</div>
+        <div class="edu-inst">IGNOU, Aryabhata College, Delhi</div>
+        <div class="edu-desc">Bachelor of Arts degree pursued alongside professional engineering practices.</div>
+      </div>
+      <!-- Schooling -->
+      <div class="edu-timeline-card">
+        <div class="edu-date">2019 - 2020</div>
+        <div class="edu-degree">Higher School Certificate (12th)</div>
+        <div class="edu-inst">Sarvodaya Bal Vidyalaya, Delhi</div>
+        <div class="edu-desc">Focussed on general sciences and vocational Information Technology (IT).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: EXPERIENCE -->
+  <section id="experience">
+    <div class="section-header">
+      <div class="section-label">Field Execution</div>
+      <h2 class="section-title">Work Experience</h2>
+    </div>
+
+    <div class="exp-list">
+      <!-- Experience 1: Tapial -->
+      <div class="exp-card">
+        <div class="exp-info-side">
+          <h3>Trainee Machine Designer</h3>
+          <div class="exp-company">
+            <span>Tapial Enterprises</span>
+            <span class="date">May 2024 - June 2024 | Noida, India</span>
+          </div>
+          <ul class="exp-bullets">
+            <li>Designed and updated custom machine assembly structures using SolidWorks and AutoCAD to aid manufacturing plans.</li>
+            <li>Conducted precision dimensional inspections on physical machined parts using Vernier Calipers and Micrometers.</li>
+            <li>Supported the drafting team in compiling mechanical assembly clearance notes and exploded layouts.</li>
+          </ul>
+          <div class="exp-tags">
+            <span class="exp-tag">SolidWorks</span>
+            <span class="exp-tag">AutoCAD</span>
+            <span class="exp-tag">Machine Assembly</span>
+            <span class="exp-tag">Quality Metrology</span>
+          </div>
+        </div>
+        
+        <div class="exp-drawing-side">
+          <!-- Dynamic SVG showing gear assembly -->
+          <svg width="150" height="150" viewBox="0 0 100 100">
+            <!-- Concentric rings -->
+            <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="1,1"/>
+            <circle cx="50" cy="50" r="28" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="1"/>
+            <!-- Center hole -->
+            <circle cx="50" cy="50" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <!-- Keyway block -->
+            <rect x="47" y="40" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1"/>
+            <!-- Radial dimension -->
+            <line x1="50" y1="50" x2="70" y2="30" stroke="var(--accent-orange)" stroke-width="1"/>
+            <text x="68" y="24" fill="var(--accent-orange)" font-family="monospace" font-size="6">R 28.0</text>
+          </svg>
+          <div class="drawing-label">DWG_REF: TE-GA-112</div>
+        </div>
+      </div>
+
+      <!-- Experience 2: Iso Hose -->
+      <div class="exp-card">
+        <div class="exp-info-side">
+          <h3>Trainee Machine Designer</h3>
+          <div class="exp-company">
+            <span>Iso Hose & Engineering Works Ltd.</span>
+            <span class="date">April 2023 - May 2023 | Delhi, India</span>
+          </div>
+          <ul class="exp-bullets">
+            <li>Created detailed hydraulic piping and hose routing layouts in AutoCAD for installation technicians.</li>
+            <li>Assisted shop engineers in assembly fitting, alignment tasks, and fitting component calibrations.</li>
+            <li>Performed height-gauge and Vernier checks on coupling adapters to ensure strict tolerance adherence.</li>
+          </ul>
+          <div class="exp-tags">
+            <span class="exp-tag">AutoCAD 2D</span>
+            <span class="exp-tag">Mechanical Fitting</span>
+            <span class="exp-tag">Piping Layouts</span>
+            <span class="exp-tag">Vernier Calipers</span>
+          </div>
+        </div>
+
+        <div class="exp-drawing-side">
+          <!-- Dynamic SVG showing hose coupling -->
+          <svg width="150" height="150" viewBox="0 0 100 100">
+            <!-- Curved pipe routing -->
+            <path d="M15 30 L60 30 A15 15 0 0 1 75 45 L75 80" fill="none" stroke="currentColor" stroke-width="6"/>
+            <!-- Coupling adapter details -->
+            <rect x="10" y="24" width="8" height="12" fill="none" stroke="currentColor" stroke-width="1"/>
+            <rect x="69" y="76" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
+            <!-- Dimension marker -->
+            <line x1="15" y1="45" x2="60" y2="45" stroke="var(--accent-orange)" stroke-width="1" stroke-dasharray="2,2"/>
+            <line x1="60" y1="30" x2="60" y2="45" stroke="var(--accent-orange)" stroke-width="0.8"/>
+            <text x="35" y="42" fill="var(--accent-orange)" font-family="monospace" font-size="6">Offset: 45.0</text>
+          </svg>
+          <div class="drawing-label">DWG_REF: IH-HC-209</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: SKILLS -->
+  <section id="skills">
+    <div class="section-header">
+      <div class="section-label">Configuration</div>
+      <h2 class="section-title">Skills & Competencies</h2>
+    </div>
+
+    <div class="skills-grid">
+      <!-- Column 1: CAD & Layout Packages -->
+      <div class="skills-column-card">
+        <div class="skills-column-title">CAD Modeling & Vector Engines</div>
+        <div class="skills-list">
+          <!-- AutoCAD -->
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">AutoCAD (2D Drafting / Mechanical)</span>
+              <span class="skill-percentage">95%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" id="fill-autocad"></div>
+            </div>
+          </div>
+          <!-- SolidWorks -->
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">SolidWorks (3D Assembly / Parts)</span>
+              <span class="skill-percentage">90%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" id="fill-solidworks"></div>
+            </div>
+          </div>
+          <!-- Illustrator -->
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Adobe Illustrator (Vector Graphics)</span>
+              <span class="skill-percentage">75%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" id="fill-illustrator"></div>
+            </div>
+          </div>
+          <!-- Canva -->
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Canva (Technical Presentations)</span>
+              <span class="skill-percentage">80%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" id="fill-canva"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Engineering & Subsystems -->
+      <div class="skills-column-card">
+        <div class="skills-column-title">Metrology & Hardware Subsystems</div>
+        <div class="skills-list">
+          <!-- Web Tech -->
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">HTML5 / CSS3 Layouts</span>
+              <span class="skill-percentage">70%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" id="fill-htmlcss"></div>
+            </div>
+          </div>
+          <!-- Linux -->
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Linux OS / Shell Operations</span>
+              <span class="skill-percentage">75%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" id="fill-linux"></div>
+            </div>
+          </div>
+          <!-- Hardware -->
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">PC Assembly & Hardware Systems</span>
+              <span class="skill-percentage">85%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" id="fill-hardware"></div>
+            </div>
+          </div>
+          
+          <!-- Metrology Switch diagnostics -->
+          <div class="skills-toggles-grid">
+            <div class="skill-toggle-item">
+              <span class="toggle-label">Vernier Caliper Precision Snaps</span>
+              <label class="toggle-switch">
+                <input type="checkbox" checked disabled>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="skill-toggle-item">
+              <span class="toggle-label">Micrometer Assembly Snaps</span>
+              <label class="toggle-switch">
+                <input type="checkbox" checked disabled>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: PLAYGROUND (DRAFTING BOX) -->
+  <section id="sandbox">
+    <div class="section-header">
+      <div class="section-label">Drawing Board</div>
+      <h2 class="section-title">Drafting Sandbox Widget</h2>
+    </div>
+
+    <div class="sandbox-wrapper">
+      <div class="sandbox-container">
+        <!-- Vertical Toolbox -->
+        <div class="sandbox-tools">
+          <button class="sandbox-tool-btn active" id="tool-select" title="Cursor Mode (Esc)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            <span>SELECT</span>
+          </button>
+          <button class="sandbox-tool-btn" id="tool-line" title="Draw Line (L)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="19" x2="19" y2="5"/></svg>
+            <span>LINE</span>
+          </button>
+          <button class="sandbox-tool-btn" id="tool-circle" title="Draw Circle (C)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+            <span>CIRCLE</span>
+          </button>
+          <button class="sandbox-tool-btn" id="tool-measure" title="Measure Distance (D)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M5 12l4-4m-4 4l4 4m10-4l-4-4m4 4l-4 4"/></svg>
+            <span>MEASURE</span>
+          </button>
+          <button class="sandbox-tool-btn" id="tool-erase" title="Erase Board (E)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <span>ERASE</span>
+          </button>
+          <button class="sandbox-tool-btn" id="tool-ortho" title="Ortho Lock (F8)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="1"/></svg>
+            <span>ORTHO</span>
+          </button>
+        </div>
+
+        <!-- Canvas Area -->
+        <div class="sandbox-canvas-pane">
+          <canvas id="drafting-canvas"></canvas>
+          
+          <!-- Drawing Stats Display -->
+          <div class="sandbox-status-bar">
+            <div>TOOL: <span id="active-tool">SELECT</span></div>
+            <div>ORTHO: <span id="ortho-status">OFF</span></div>
+            <div>COORDINATES: <span id="active-coords">X: 0.00, Y: 0.00</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <div class="section-label">Transmission</div>
+      <h2 class="section-title">Fabrication RFQ (Contact)</h2>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-instructions">
+        Submit drawing files, fabrication requests, or employment queries below to route them directly to Alok Kumar.
+      </div>
+      
+      <form class="contact-form" id="rfq-form">
+        <!-- Web3Forms Access Key: Replace with your actual key from https://web3forms.com -->
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+        
+        <div class="form-group">
+          <label for="contact-name">Requester Name</label>
+          <input type="text" id="contact-name" name="name" placeholder="E.g., John Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="contact-email">Communication Email</label>
+          <input type="email" id="contact-email" name="email" placeholder="E.g., email@domain.com" required>
+        </div>
+        <div class="form-group">
+          <label for="contact-category">Requested Category</label>
+          <select id="contact-category" name="category">
+            <option value="drafting">AutoCAD 2D Drafting</option>
+            <option value="assembly">SolidWorks 3D Assembly Modeling</option>
+            <option value="inspection">Precision Metrology / Inspection Consultation</option>
+            <option value="hiring">Employment / Trainee Job Query</option>
+            <option value="general">General Design Enquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="contact-tolerance">Tolerance Constraint</label>
+          <select id="contact-tolerance" name="tolerance">
+            <option value="standard">Standard Assembly (±0.1 mm)</option>
+            <option value="precision">High Precision (±0.01 mm)</option>
+            <option value="reference">Reference / Layout Only</option>
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="contact-message">Technical Instructions (Message)</label>
+          <textarea id="contact-message" name="message" placeholder="Provide details regarding assembly constraints, tolerances, sizing, materials..." required></textarea>
+        </div>
+
+        <div class="success-message" id="form-success">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          RFQ Transmitted. System status code: 200 OK. Queued for review.
+        </div>
+
+        <div class="submit-btn-wrap">
+          <button type="submit" class="submit-btn">
+            Transmit Specs
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-text">
+        © 2026 Alok Kumar. Assembled in Metric standard (mm). All rights reserved.
+      </div>
+      <div class="footer-links">
+        <a href="mailto:ak7247410@gmail.com" class="footer-link">ak7247410@gmail.com</a>
+        <a href="tel:+918851993953" class="footer-link">+91 8851993953</a>
+        <a href="https://linkedin.com/in/alok-kumar-551826223" target="_blank" class="footer-link">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WebGL Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Main Script -->
+  <script src="app.js"></script>
+</body>
+</html>
