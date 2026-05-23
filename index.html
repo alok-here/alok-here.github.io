@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Alok Kumar - CAD Designer & Mechanical Engineering Portfolio. Professional 2D Drafting and 3D Assembly Modeling using SolidWorks and AutoCAD.">
   <title>Alok Kumar | CAD Designer Portfolio</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=3.0.0">
 </head>
 <body>
 
@@ -52,6 +52,15 @@
       <div class="hero-badge">System Status: Active</div>
       <h1>CAD Designer &<br><span>Mechanical Engineer</span></h1>
       <p class="hero-subtitle">Translating complex designs into production-ready blueprints.</p>
+      
+      <!-- diagnostics-hud panel -->
+      <div class="diagnostics-hud">
+        <div class="diagnostics-hud-item">DESIGN ENGINE: <span>AutoCAD / SolidWorks</span></div>
+        <div class="diagnostics-hud-item">DRAWING UNITS: <span>Metric (mm)</span></div>
+        <div class="diagnostics-hud-item">DRAFTING CODE: <span>ASME Y14.5m / ISO</span></div>
+        <div class="diagnostics-hud-item">SYSTEM STATUS: <span>Ready for Hiring</span></div>
+      </div>
+      
       <p class="hero-desc">
         Specializing in 2D technical drafting, 3D parametric assembly modeling, and quality control metrology. Offering hands-on engineering fitter expertise and solid training in ISO standards and fits/tolerances.
       </p>
@@ -60,9 +69,31 @@
         <a href="#contact" class="btn btn-secondary">Request RFQ</a>
       </div>
     </div>
-    <div class="hero-canvas-side">
-      <div class="canvas-hint">[VIEWPORT: 3D V8 CAD SECTION VIEW]</div>
-      <div id="canvas3d-container"></div>
+    
+    <!-- Canvas container wrapped in drawing sheet style -->
+    <div class="drawing-sheet" style="width: 100%; aspect-ratio: 1;">
+      <div class="drawing-sheet-inner" style="padding: 0; position: relative;">
+        <div class="canvas-hint">[VIEWPORT: 3D V8 CAD SECTION VIEW]</div>
+        <div id="canvas3d-container"></div>
+        
+        <!-- Small CAD Title block in the corner of the canvas viewport -->
+        <table class="cad-title-block" style="position: absolute; bottom: 12px; right: 12px; max-width: 220px; margin-top: 0; z-index: 10; opacity: 0.9;">
+          <tr>
+            <td>
+              <span class="block-label">DRG NO</span>
+              <span class="block-value">SEC-V8-3D</span>
+            </td>
+            <td>
+              <span class="block-label">SCALE</span>
+              <span class="block-value">1:1</span>
+            </td>
+            <td>
+              <span class="block-label">REV</span>
+              <span class="block-value">A.0</span>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -75,46 +106,90 @@
     
     <div class="about-grid">
       <!-- Left Column: Datasheet -->
-      <div class="about-card">
-        <div class="about-card-title">Technical Specifications</div>
-        <table class="tech-spec-table">
-          <tr>
-            <td class="label">LOCATION</td>
-            <td class="value">New Delhi, India</td>
-          </tr>
-          <tr>
-            <td class="label">PRIMARY CAD</td>
-            <td class="value">SolidWorks, AutoCAD Mechanical</td>
-          </tr>
-          <tr>
-            <td class="label">STANDARDS</td>
-            <td class="value">ISO 2768-m (General Tolerances), GD&amp;T</td>
-          </tr>
-          <tr>
-            <td class="label">METROLOGY</td>
-            <td class="value">Vernier Calipers, Micrometers, Height Gauges</td>
-          </tr>
-          <tr>
-            <td class="label">DRAFTING CODE</td>
-            <td class="value">ASME Y14.5m Compliant</td>
-          </tr>
-          <tr>
-            <td class="label">OTHER SUITES</td>
-            <td class="value">Adobe Illustrator (Vector), Canva, MS Office</td>
-          </tr>
-        </table>
+      <div class="drawing-sheet">
+        <div class="drawing-sheet-inner">
+          <div class="about-card-title">Technical Specifications</div>
+          <table class="tech-spec-table">
+            <tr>
+              <td class="label">LOCATION</td>
+              <td class="value">New Delhi, India</td>
+            </tr>
+            <tr>
+              <td class="label">PRIMARY CAD</td>
+              <td class="value">SolidWorks, AutoCAD Mechanical</td>
+            </tr>
+            <tr>
+              <td class="label">STANDARDS</td>
+              <td class="value">ISO 2768-m (General Tolerances), GD&amp;T</td>
+            </tr>
+            <tr>
+              <td class="label">METROLOGY</td>
+              <td class="value">Vernier Calipers, Micrometers, Height Gauges</td>
+            </tr>
+            <tr>
+              <td class="label">DRAFTING CODE</td>
+              <td class="value">ASME Y14.5m Compliant</td>
+            </tr>
+            <tr>
+              <td class="label">OTHER SUITES</td>
+              <td class="value">Adobe Illustrator (Vector), Canva, MS Office</td>
+            </tr>
+          </table>
+          
+          <!-- Drawing Title Block inside spec sheet -->
+          <table class="cad-title-block">
+            <tr>
+              <td colspan="2">
+                <span class="block-label">DRAWING TITLE</span>
+                <span class="block-value">METROLOGY &amp; SPECIFICATION SHEET</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="block-label">SCALE</span>
+                <span class="block-value">NTS</span>
+              </td>
+              <td>
+                <span class="block-label">SHEET NO</span>
+                <span class="block-value">01 OF 05</span>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
 
       <!-- Right Column: Personal Profile Bio -->
-      <div class="about-card" style="display: flex; flex-direction: column; justify-content: center;">
-        <div class="about-card-title">System Overview</div>
-        <div class="about-bio-text">
-          <p>
-            Enthusiastic and detail-oriented mechanical design trainee. Built on a solid theoretical background and hands-on shop fabrication experience, I specialize in translating complex design ideas into accurate CAD layouts.
-          </p>
-          <p>
-            With training in mechanical fitter trades, I understand the practicalities of metal fitting, machine assembly, and tolerance constraints. I am highly motivated to work on manufacturing-driven CAD design contracts and full-time assemblies.
-          </p>
+      <div class="drawing-sheet">
+        <div class="drawing-sheet-inner">
+          <div class="about-card-title">System Overview</div>
+          <div class="about-bio-text">
+            <p>
+              Enthusiastic and detail-oriented mechanical design trainee. Built on a solid theoretical background and hands-on shop fabrication experience, I specialize in translating complex design ideas into accurate CAD layouts.
+            </p>
+            <p>
+              With training in mechanical fitter trades, I understand the practicalities of metal fitting, machine assembly, and tolerance constraints. I am highly motivated to work on manufacturing-driven CAD design contracts and full-time assemblies.
+            </p>
+          </div>
+          
+          <!-- Drawing Title Block inside bio sheet -->
+          <table class="cad-title-block" style="margin-top: auto;">
+            <tr>
+              <td colspan="2">
+                <span class="block-label">SYSTEM DETAILS</span>
+                <span class="block-value">DESIGNER BIOGRAPHY REGISTER</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="block-label">DESIGNER</span>
+                <span class="block-value">ALOK KUMAR</span>
+              </td>
+              <td>
+                <span class="block-label">APPROVED BY</span>
+                <span class="block-value">HR DEPT</span>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -127,32 +202,92 @@
 
     <div class="edu-timeline">
       <!-- Diploma -->
-      <div class="edu-timeline-card">
-        <div class="edu-date">Completed 2025</div>
-        <div class="edu-degree">Diploma in Mechanical Engineering</div>
-        <div class="edu-inst">Pusa Institute of Technology, New Delhi</div>
-        <div class="edu-desc">Coursework in CAD Design, mechanical components, solid mechanics, and fabrication shop practices.</div>
+      <div class="drawing-sheet">
+        <div class="drawing-sheet-inner">
+          <div class="edu-date">Completed 2025</div>
+          <div class="edu-degree">Diploma in Mechanical Engineering</div>
+          <div class="edu-inst">Pusa Institute of Technology, New Delhi</div>
+          <div class="edu-desc">Coursework in CAD Design, mechanical components, solid mechanics, and fabrication shop practices.</div>
+          
+          <table class="cad-title-block" style="margin-top: auto;">
+            <tr>
+              <td>
+                <span class="block-label">DRG NO</span>
+                <span class="block-value">EDU-MECH-DIP</span>
+              </td>
+              <td>
+                <span class="block-label">SHEET</span>
+                <span class="block-value">01/04</span>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
       <!-- ITI -->
-      <div class="edu-timeline-card">
-        <div class="edu-date">2021 - 2023</div>
-        <div class="edu-degree">ITI Trade Certificate (Fitter)</div>
-        <div class="edu-inst">ITI Jail Road, New Delhi</div>
-        <div class="edu-desc">Intense practical shop training in structural assembly, metal fitting, and micrometer/caliper measurements.</div>
+      <div class="drawing-sheet">
+        <div class="drawing-sheet-inner">
+          <div class="edu-date">2021 - 2023</div>
+          <div class="edu-degree">ITI Trade Certificate (Fitter)</div>
+          <div class="edu-inst">ITI Jail Road, New Delhi</div>
+          <div class="edu-desc">Intense practical shop training in structural assembly, metal fitting, and micrometer/caliper measurements.</div>
+          
+          <table class="cad-title-block" style="margin-top: auto;">
+            <tr>
+              <td>
+                <span class="block-label">DRG NO</span>
+                <span class="block-value">EDU-ITI-FIT</span>
+              </td>
+              <td>
+                <span class="block-label">SHEET</span>
+                <span class="block-value">02/04</span>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
       <!-- Graduation -->
-      <div class="edu-timeline-card">
-        <div class="edu-date">Pursuing</div>
-        <div class="edu-degree">Graduation (BAG)</div>
-        <div class="edu-inst">IGNOU, Aryabhata College, Delhi</div>
-        <div class="edu-desc">Bachelor of Arts degree pursued alongside professional engineering practices.</div>
+      <div class="drawing-sheet">
+        <div class="drawing-sheet-inner">
+          <div class="edu-date">Pursuing</div>
+          <div class="edu-degree">Graduation (BAG)</div>
+          <div class="edu-inst">IGNOU, Aryabhata College, Delhi</div>
+          <div class="edu-desc">Bachelor of Arts degree pursued alongside professional engineering practices.</div>
+          
+          <table class="cad-title-block" style="margin-top: auto;">
+            <tr>
+              <td>
+                <span class="block-label">DRG NO</span>
+                <span class="block-value">EDU-IGNOU-BA</span>
+              </td>
+              <td>
+                <span class="block-label">SHEET</span>
+                <span class="block-value">03/04</span>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
       <!-- Schooling -->
-      <div class="edu-timeline-card">
-        <div class="edu-date">2019 - 2020</div>
-        <div class="edu-degree">Higher School Certificate (12th)</div>
-        <div class="edu-inst">Sarvodaya Bal Vidyalaya, Delhi</div>
-        <div class="edu-desc">Focussed on general sciences and vocational Information Technology (IT).</div>
+      <div class="drawing-sheet">
+        <div class="drawing-sheet-inner">
+          <div class="edu-date">2019 - 2020</div>
+          <div class="edu-degree">Higher School Certificate (12th)</div>
+          <div class="edu-inst">Sarvodaya Bal Vidyalaya, Delhi</div>
+          <div class="edu-desc">Focussed on general sciences and vocational Information Technology (IT).</div>
+          
+          <table class="cad-title-block" style="margin-top: auto;">
+            <tr>
+              <td>
+                <span class="block-label">DRG NO</span>
+                <span class="block-value">EDU-SBV-HSC</span>
+              </td>
+              <td>
+                <span class="block-label">SHEET</span>
+                <span class="block-value">04/04</span>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   </section>
@@ -167,79 +302,109 @@
     <div class="exp-list">
       <!-- Experience 1: Tapial -->
       <div class="exp-card">
-        <div class="exp-info-side">
-          <h3>Trainee Machine Designer</h3>
-          <div class="exp-company">
-            <span>Tapial Enterprises</span>
-            <span class="date">May 2024 - June 2024 | Noida, India</span>
+        <div class="exp-card-inner">
+          <div class="exp-info-side">
+            <h3>Trainee Machine Designer</h3>
+            <div class="exp-company">
+              <span>Tapial Enterprises</span>
+              <span class="date">May 2024 - June 2024 | Noida, India</span>
+            </div>
+            <ul class="exp-bullets">
+              <li>Designed and updated custom machine assembly structures using SolidWorks and AutoCAD to aid manufacturing plans.</li>
+              <li>Conducted precision dimensional inspections on physical machined parts using Vernier Calipers and Micrometers.</li>
+              <li>Supported the drafting team in compiling mechanical assembly clearance notes and exploded layouts.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">SolidWorks</span>
+              <span class="exp-tag">AutoCAD</span>
+              <span class="exp-tag">Machine Assembly</span>
+              <span class="exp-tag">Quality Metrology</span>
+            </div>
+            
+            <table class="cad-title-block" style="margin-top: 15px;">
+              <tr>
+                <td>
+                  <span class="block-label">DRAWING REGISTER</span>
+                  <span class="block-value">EXP-TAPIAL-01</span>
+                </td>
+                <td>
+                  <span class="block-label">SCALE</span>
+                  <span class="block-value">1:2</span>
+                </td>
+              </tr>
+            </table>
           </div>
-          <ul class="exp-bullets">
-            <li>Designed and updated custom machine assembly structures using SolidWorks and AutoCAD to aid manufacturing plans.</li>
-            <li>Conducted precision dimensional inspections on physical machined parts using Vernier Calipers and Micrometers.</li>
-            <li>Supported the drafting team in compiling mechanical assembly clearance notes and exploded layouts.</li>
-          </ul>
-          <div class="exp-tags">
-            <span class="exp-tag">SolidWorks</span>
-            <span class="exp-tag">AutoCAD</span>
-            <span class="exp-tag">Machine Assembly</span>
-            <span class="exp-tag">Quality Metrology</span>
+          
+          <div class="exp-drawing-side">
+            <!-- Dynamic SVG showing gear assembly -->
+            <svg width="150" height="150" viewBox="0 0 100 100">
+              <!-- Concentric rings -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="1,1"/>
+              <circle cx="50" cy="50" r="28" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="1"/>
+              <!-- Center hole -->
+              <circle cx="50" cy="50" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <!-- Keyway block -->
+              <rect x="47" y="40" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1"/>
+              <!-- Radial dimension -->
+              <line x1="50" y1="50" x2="70" y2="30" stroke="var(--accent-orange)" stroke-width="1"/>
+              <text x="68" y="24" fill="var(--accent-orange)" font-family="monospace" font-size="6">R 28.0</text>
+            </svg>
+            <div class="drawing-label">DWG_REF: TE-GA-112</div>
           </div>
-        </div>
-        
-        <div class="exp-drawing-side">
-          <!-- Dynamic SVG showing gear assembly -->
-          <svg width="150" height="150" viewBox="0 0 100 100">
-            <!-- Concentric rings -->
-            <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="1,1"/>
-            <circle cx="50" cy="50" r="28" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="1"/>
-            <!-- Center hole -->
-            <circle cx="50" cy="50" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <!-- Keyway block -->
-            <rect x="47" y="40" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1"/>
-            <!-- Radial dimension -->
-            <line x1="50" y1="50" x2="70" y2="30" stroke="var(--accent-orange)" stroke-width="1"/>
-            <text x="68" y="24" fill="var(--accent-orange)" font-family="monospace" font-size="6">R 28.0</text>
-          </svg>
-          <div class="drawing-label">DWG_REF: TE-GA-112</div>
         </div>
       </div>
 
       <!-- Experience 2: Iso Hose -->
       <div class="exp-card">
-        <div class="exp-info-side">
-          <h3>Trainee Machine Designer</h3>
-          <div class="exp-company">
-            <span>Iso Hose & Engineering Works Ltd.</span>
-            <span class="date">April 2023 - May 2023 | Delhi, India</span>
+        <div class="exp-card-inner">
+          <div class="exp-info-side">
+            <h3>Trainee Machine Designer</h3>
+            <div class="exp-company">
+              <span>Iso Hose & Engineering Works Ltd.</span>
+              <span class="date">April 2023 - May 2023 | Delhi, India</span>
+            </div>
+            <ul class="exp-bullets">
+              <li>Created detailed hydraulic piping and hose routing layouts in AutoCAD for installation technicians.</li>
+              <li>Assisted shop engineers in assembly fitting, alignment tasks, and fitting component calibrations.</li>
+              <li>Performed height-gauge and Vernier checks on coupling adapters to ensure strict tolerance adherence.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">AutoCAD 2D</span>
+              <span class="exp-tag">Mechanical Fitting</span>
+              <span class="exp-tag">Piping Layouts</span>
+              <span class="exp-tag">Vernier Calipers</span>
+            </div>
+            
+            <table class="cad-title-block" style="margin-top: 15px;">
+              <tr>
+                <td>
+                  <span class="block-label">DRAWING REGISTER</span>
+                  <span class="block-value">EXP-ISOHOSE-02</span>
+                </td>
+                <td>
+                  <span class="block-label">SCALE</span>
+                  <span class="block-value">1:5</span>
+                </td>
+              </tr>
+            </table>
           </div>
-          <ul class="exp-bullets">
-            <li>Created detailed hydraulic piping and hose routing layouts in AutoCAD for installation technicians.</li>
-            <li>Assisted shop engineers in assembly fitting, alignment tasks, and fitting component calibrations.</li>
-            <li>Performed height-gauge and Vernier checks on coupling adapters to ensure strict tolerance adherence.</li>
-          </ul>
-          <div class="exp-tags">
-            <span class="exp-tag">AutoCAD 2D</span>
-            <span class="exp-tag">Mechanical Fitting</span>
-            <span class="exp-tag">Piping Layouts</span>
-            <span class="exp-tag">Vernier Calipers</span>
-          </div>
-        </div>
 
-        <div class="exp-drawing-side">
-          <!-- Dynamic SVG showing hose coupling -->
-          <svg width="150" height="150" viewBox="0 0 100 100">
-            <!-- Curved pipe routing -->
-            <path d="M15 30 L60 30 A15 15 0 0 1 75 45 L75 80" fill="none" stroke="currentColor" stroke-width="6"/>
-            <!-- Coupling adapter details -->
-            <rect x="10" y="24" width="8" height="12" fill="none" stroke="currentColor" stroke-width="1"/>
-            <rect x="69" y="76" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
-            <!-- Dimension marker -->
-            <line x1="15" y1="45" x2="60" y2="45" stroke="var(--accent-orange)" stroke-width="1" stroke-dasharray="2,2"/>
-            <line x1="60" y1="30" x2="60" y2="45" stroke="var(--accent-orange)" stroke-width="0.8"/>
-            <text x="35" y="42" fill="var(--accent-orange)" font-family="monospace" font-size="6">Offset: 45.0</text>
-          </svg>
-          <div class="drawing-label">DWG_REF: IH-HC-209</div>
+          <div class="exp-drawing-side">
+            <!-- Dynamic SVG showing hose coupling -->
+            <svg width="150" height="150" viewBox="0 0 100 100">
+              <!-- Curved pipe routing -->
+              <path d="M15 30 L60 30 A15 15 0 0 1 75 45 L75 80" fill="none" stroke="currentColor" stroke-width="6"/>
+              <!-- Coupling adapter details -->
+              <rect x="10" y="24" width="8" height="12" fill="none" stroke="currentColor" stroke-width="1"/>
+              <rect x="69" y="76" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
+              <!-- Dimension marker -->
+              <line x1="15" y1="45" x2="60" y2="45" stroke="var(--accent-orange)" stroke-width="1" stroke-dasharray="2,2"/>
+              <line x1="60" y1="30" x2="60" y2="45" stroke="var(--accent-orange)" stroke-width="0.8"/>
+              <text x="35" y="42" fill="var(--accent-orange)" font-family="monospace" font-size="6">Offset: 45.0</text>
+            </svg>
+            <div class="drawing-label">DWG_REF: IH-HC-209</div>
+          </div>
         </div>
       </div>
     </div>
@@ -255,46 +420,48 @@
     <div class="skills-grid">
       <!-- Column 1: CAD & Layout Packages -->
       <div class="skills-column-card">
-        <div class="skills-column-title">CAD Modeling & Vector Engines</div>
-        <div class="skills-list">
-          <!-- AutoCAD -->
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">AutoCAD (2D Drafting / Mechanical)</span>
-              <span class="skill-percentage">95%</span>
+        <div class="skills-column-card-inner">
+          <div class="skills-column-title">CAD Modeling & Vector Engines</div>
+          <div class="skills-list">
+            <!-- AutoCAD -->
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">AutoCAD (2D Drafting / Mechanical)</span>
+                <span class="skill-percentage">95%</span>
+              </div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" id="fill-autocad"></div>
+              </div>
             </div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" id="fill-autocad"></div>
+            <!-- SolidWorks -->
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">SolidWorks (3D Assembly / Parts)</span>
+                <span class="skill-percentage">90%</span>
+              </div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" id="fill-solidworks"></div>
+              </div>
             </div>
-          </div>
-          <!-- SolidWorks -->
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">SolidWorks (3D Assembly / Parts)</span>
-              <span class="skill-percentage">90%</span>
+            <!-- Illustrator -->
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Adobe Illustrator (Vector Graphics)</span>
+                <span class="skill-percentage">75%</span>
+              </div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" id="fill-illustrator"></div>
+              </div>
             </div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" id="fill-solidworks"></div>
-            </div>
-          </div>
-          <!-- Illustrator -->
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">Adobe Illustrator (Vector Graphics)</span>
-              <span class="skill-percentage">75%</span>
-            </div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" id="fill-illustrator"></div>
-            </div>
-          </div>
-          <!-- Canva -->
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">Canva (Technical Presentations)</span>
-              <span class="skill-percentage">80%</span>
-            </div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" id="fill-canva"></div>
+            <!-- Canva -->
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Canva (Technical Presentations)</span>
+                <span class="skill-percentage">80%</span>
+              </div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" id="fill-canva"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -302,54 +469,56 @@
 
       <!-- Column 2: Engineering & Subsystems -->
       <div class="skills-column-card">
-        <div class="skills-column-title">Metrology & Hardware Subsystems</div>
-        <div class="skills-list">
-          <!-- Web Tech -->
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">HTML5 / CSS3 Layouts</span>
-              <span class="skill-percentage">70%</span>
+        <div class="skills-column-card-inner">
+          <div class="skills-column-title">Metrology & Hardware Subsystems</div>
+          <div class="skills-list">
+            <!-- Web Tech -->
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">HTML5 / CSS3 Layouts</span>
+                <span class="skill-percentage">70%</span>
+              </div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" id="fill-htmlcss"></div>
+              </div>
             </div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" id="fill-htmlcss"></div>
+            <!-- Linux -->
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Linux OS / Shell Operations</span>
+                <span class="skill-percentage">75%</span>
+              </div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" id="fill-linux"></div>
+              </div>
             </div>
-          </div>
-          <!-- Linux -->
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">Linux OS / Shell Operations</span>
-              <span class="skill-percentage">75%</span>
+            <!-- Hardware -->
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">PC Assembly & Hardware Systems</span>
+                <span class="skill-percentage">85%</span>
+              </div>
+              <div class="skill-bar-track">
+                <div class="skill-bar-fill" id="fill-hardware"></div>
+              </div>
             </div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" id="fill-linux"></div>
-            </div>
-          </div>
-          <!-- Hardware -->
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">PC Assembly & Hardware Systems</span>
-              <span class="skill-percentage">85%</span>
-            </div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" id="fill-hardware"></div>
-            </div>
-          </div>
-          
-          <!-- Metrology Switch diagnostics -->
-          <div class="skills-toggles-grid">
-            <div class="skill-toggle-item">
-              <span class="toggle-label">Vernier Caliper Precision Snaps</span>
-              <label class="toggle-switch">
-                <input type="checkbox" checked disabled>
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-            <div class="skill-toggle-item">
-              <span class="toggle-label">Micrometer Assembly Snaps</span>
-              <label class="toggle-switch">
-                <input type="checkbox" checked disabled>
-                <span class="toggle-slider"></span>
-              </label>
+            
+            <!-- Metrology Switch diagnostics -->
+            <div class="skills-toggles-grid">
+              <div class="skill-toggle-item">
+                <span class="toggle-label">Vernier Caliper Precision Snaps</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked disabled>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="skill-toggle-item">
+                <span class="toggle-label">Micrometer Assembly Snaps</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked disabled>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
             </div>
           </div>
         </div>

@@ -225,6 +225,121 @@ section {
   margin: 0 auto;
 }
 
+/* =============================================================================
+   ENGINEERING BLUEPRINT SHEET LAYOUTS (CAD SPECIFIC)
+   ============================================================================= */
+.drawing-sheet {
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  position: relative;
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawing-sheet:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.drawing-sheet-inner {
+  border: 1px solid var(--border-color);
+  padding: 28px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Coordinate Grid Marks in the corners of each blueprint card */
+.drawing-sheet-inner::before, .drawing-sheet-inner::after {
+  content: '+';
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.drawing-sheet-inner::before {
+  top: 8px;
+  left: 8px;
+}
+.drawing-sheet-inner::after {
+  bottom: 8px;
+  right: 8px;
+}
+
+/* CAD Title Block (Metadata stamp inside blueprint) */
+.cad-title-block {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  margin-top: 24px;
+  background-color: var(--bg-secondary);
+  align-self: flex-end;
+  border-collapse: collapse;
+}
+
+.cad-title-block td {
+  border: 1px solid var(--border-color);
+  padding: 5px 8px;
+  vertical-align: middle;
+}
+
+.cad-title-block .block-label {
+  font-size: 8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+}
+
+.cad-title-block .block-value {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Diagnostics HUD Panel */
+.diagnostics-hud {
+  border: 1px dashed var(--border-color);
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+
+.diagnostics-hud-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dotted var(--border-color);
+  padding-bottom: 4px;
+}
+
+.diagnostics-hud-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.diagnostics-hud-item span {
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
 .section-header {
   margin-bottom: 60px;
 }
@@ -589,10 +704,7 @@ section {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 36px;
-  display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 40px;
+  padding: 8px;
   box-shadow: var(--shadow-md);
   backdrop-filter: blur(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -601,6 +713,38 @@ section {
 .exp-card:hover {
   border-color: var(--border-hover);
   box-shadow: var(--shadow-lg);
+}
+
+.exp-card-inner {
+  border: 1px solid var(--border-color);
+  padding: 36px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 40px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Coordinate Grid Marks in the corners of each blueprint card */
+.exp-card-inner::before, .exp-card-inner::after {
+  content: '+';
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.exp-card-inner::before {
+  top: 8px;
+  left: 8px;
+}
+.exp-card-inner::after {
+  bottom: 8px;
+  right: 8px;
 }
 
 .exp-info-side h3 {
@@ -727,9 +871,38 @@ section {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 36px;
+  padding: 8px;
   box-shadow: var(--shadow-md);
   backdrop-filter: blur(10px);
+}
+
+.skills-column-card-inner {
+  border: 1px solid var(--border-color);
+  padding: 28px;
+  border-radius: 12px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.skills-column-card-inner::before, .skills-column-card-inner::after {
+  content: '+';
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.skills-column-card-inner::before {
+  top: 8px;
+  left: 8px;
+}
+.skills-column-card-inner::after {
+  bottom: 8px;
+  right: 8px;
 }
 
 .skills-column-title {
@@ -1247,9 +1420,10 @@ section {
     gap: 30px;
   }
   
-  .exp-card {
+  .exp-card-inner {
     grid-template-columns: 1fr;
     gap: 30px;
+    padding: 24px;
   }
   
   .skills-grid {
