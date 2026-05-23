@@ -574,6 +574,20 @@ let points = [];
 let shapes = [];
 let tempGeometry = null;
 
+let commandHistory = ["AutoCAD Web Console initialized. Ready."];
+
+function printToTerminal(text) {
+  commandHistory.push(text);
+  if (commandHistory.length > 3) {
+    commandHistory.shift();
+  }
+  const historyEl = document.getElementById('terminal-history');
+  if (historyEl) {
+    historyEl.innerHTML = commandHistory.map(line => `<div>${line}</div>`).join('');
+    historyEl.scrollTop = historyEl.scrollHeight;
+  }
+}
+
 function initDraftingCanvas() {
   canvas = document.getElementById('drafting-canvas');
   if (!canvas) return;
@@ -601,6 +615,7 @@ function resizeDraftingCanvas() {
 function setCanvasTool(toolName) {
   activeTool = toolName;
   tempGeometry = null;
+  points = []; // Clear points when switching tools
   
   // Update sidebar buttons active states
   document.querySelectorAll('.sandbox-tool-btn').forEach(btn => {
@@ -615,11 +630,13 @@ function setCanvasTool(toolName) {
   });
 
   // Update status bar label
-  const activeToolLabel = document.getElementById('active-tool');
-  if (activeToolLabel) {
-    activeToolLabel.textContent = toolName.toUpperCase();
-    activeToolLabel.style.color = toolName === 'measure' ? 'var(--accent-orange)' : 'var(--accent-cyan)';
+  const activeCommandText = document.getElementById('active-command-text');
+  if (activeCommandText) {
+    activeCommandText.textContent = toolName.toUpperCase();
+    activeCommandText.style.color = toolName === 'measure' ? '#ff5a00' : '#00f0ff';
   }
+  
+  printToTerminal(`Command: ${toolName.toUpperCase()}`);
 }
 
 function setupCanvasTools() {
@@ -639,6 +656,7 @@ function setupCanvasTools() {
       points = [];
       tempGeometry = null;
       redrawCanvas();
+      printToTerminal("Command: ERASE. Viewport cleared.");
     });
   }
 
@@ -649,7 +667,8 @@ function setupCanvasTools() {
       orthoMode = !orthoMode;
       orthoBtn.classList.toggle('active', orthoMode);
       document.getElementById('ortho-status').textContent = orthoMode ? 'ON' : 'OFF';
-      document.getElementById('ortho-status').style.color = orthoMode ? 'var(--accent-green)' : 'var(--text-secondary)';
+      document.getElementById('ortho-status').style.color = orthoMode ? '#39ff14' : '#64748b';
+      printToTerminal(`Command: ORTHOMODE = ${orthoMode ? '1' : '0'}`);
     });
   }
 }
@@ -668,11 +687,14 @@ function getCanvasCoords(e) {
 
 function handleCanvasClick(e) {
   const pos = getCanvasCoords(e);
+  const scaledX = (pos.x * 0.25).toFixed(1);
+  const scaledY = (pos.y * 0.25).toFixed(1);
   
   if (activeTool === 'line') {
     if (points.length === 0) {
       points.push(pos);
       tempGeometry = { type: 'line', start: pos, end: pos };
+      printToTerminal(`LINE Specify first point: X: ${scaledX}, Y: ${scaledY}`);
     } else {
       let endPos = pos;
       if (orthoMode) {
@@ -687,6 +709,11 @@ function handleCanvasClick(e) {
         length: distance
       });
       
+      const endX = (endPos.x * 0.25).toFixed(1);
+      const endY = (endPos.y * 0.25).toFixed(1);
+      printToTerminal(`LINE Specify next point: X: ${endX}, Y: ${endY}`);
+      printToTerminal(`LINE Created. Length: ${distance.toFixed(1)} mm`);
+      
       points = [];
       tempGeometry = null;
     }
@@ -695,6 +722,7 @@ function handleCanvasClick(e) {
     if (points.length === 0) {
       points.push(pos);
       tempGeometry = { type: 'circle', center: pos, radius: 0 };
+      printToTerminal(`CIRCLE Specify center point: X: ${scaledX}, Y: ${scaledY}`);
     } else {
       let endPos = pos;
       if (orthoMode) {
@@ -708,6 +736,9 @@ function handleCanvasClick(e) {
         radius: radius
       });
       
+      printToTerminal(`CIRCLE Specify radius point: R = ${radius.toFixed(1)} mm`);
+      printToTerminal(`CIRCLE Created. Center: (${(points[0].x*0.25).toFixed(1)}, ${(points[0].y*0.25).toFixed(1)})`);
+      
       points = [];
       tempGeometry = null;
     }
@@ -716,6 +747,7 @@ function handleCanvasClick(e) {
     if (points.length === 0) {
       points.push(pos);
       tempGeometry = { type: 'measure', start: pos, end: pos };
+      printToTerminal(`DIST Specify first point: X: ${scaledX}, Y: ${scaledY}`);
     } else {
       let endPos = pos;
       if (orthoMode) {
@@ -729,6 +761,11 @@ function handleCanvasClick(e) {
         end: endPos,
         length: dist
       });
+      
+      const endX = (endPos.x * 0.25).toFixed(1);
+      const endY = (endPos.y * 0.25).toFixed(1);
+      printToTerminal(`DIST Specify second point: X: ${endX}, Y: ${endY}`);
+      printToTerminal(`Distance = ${dist.toFixed(1)} mm`);
       
       points = [];
       tempGeometry = null;
@@ -778,8 +815,8 @@ function redrawCanvas() {
   
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  // Draw Grid Lines
-  ctx.strokeStyle = isLightMode ? 'rgba(0,0,0,0.02)' : 'rgba(255,255,255,0.02)';
+  // Draw Grid Lines (always dark viewport grid)
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
   ctx.lineWidth = 1;
   for (let x = 0; x < canvas.width; x += 20) {
     ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
@@ -788,11 +825,10 @@ function redrawCanvas() {
     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
   }
 
-  // Draw Shapes
+  // Draw Shapes (always neon AutoCAD colors)
   shapes.forEach(shape => {
-    const isLightModeCol = isLightMode;
-    const geomColor = isLightModeCol ? 'var(--accent-cyan)' : 'var(--accent-green)';
-    const dimColor = 'var(--accent-orange)';
+    const geomColor = '#00f0ff'; // Neon Cyan
+    const dimColor = '#ff5a00';  // Neon Orange
     
     if (shape.type === 'line') {
       drawSolidLine(shape.start, shape.end, geomColor);
@@ -817,8 +853,8 @@ function redrawCanvas() {
 
   // Draw Guidelines
   if (tempGeometry) {
-    const tempColor = isLightMode ? 'rgba(2, 132, 199, 0.4)' : 'rgba(0, 240, 255, 0.4)';
-    const measureColor = 'rgba(255, 90, 0, 0.4)';
+    const tempColor = 'rgba(0, 240, 255, 0.5)';
+    const measureColor = 'rgba(255, 90, 0, 0.5)';
     
     if (tempGeometry.type === 'line') {
       drawSolidLine(tempGeometry.start, tempGeometry.end, tempColor, true);
@@ -834,8 +870,8 @@ function redrawCanvas() {
 }
 
 function drawAnchorNode(p) {
-  ctx.fillStyle = 'var(--accent-cyan)';
-  ctx.strokeStyle = isLightMode ? '#fff' : '#000';
+  ctx.fillStyle = '#00f0ff';
+  ctx.strokeStyle = '#ffffff';
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.rect(p.x - 3, p.y - 3, 6, 6);
@@ -888,7 +924,7 @@ function drawRadialDimension(center, radius, text, color) {
   const rx = center.x + Math.cos(angle) * radius;
   const ry = center.y + Math.sin(angle) * radius;
   
-  ctx.strokeStyle = isLightMode ? 'rgba(0,0,0,0.15)' : 'rgba(255, 255, 255, 0.15)';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
   ctx.lineWidth = 0.5;
   ctx.beginPath();
   ctx.moveTo(center.x, center.y);

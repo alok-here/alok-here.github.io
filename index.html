@@ -51,9 +51,9 @@
     <div class="hero-text-side">
       <div class="hero-badge">System Status: Active</div>
       <h1>CAD Designer &<br><span>Mechanical Engineer</span></h1>
-      <p class="hero-subtitle">Turning sketches into manufactured reality.</p>
+      <p class="hero-subtitle">Translating complex designs into production-ready blueprints.</p>
       <p class="hero-desc">
-        Specializing in 2D technical drafting, 3D parametric assemblies, and physical component inspections. Proficient in AutoCAD and SolidWorks to deliver precise drawings with proper fit tolerances.
+        Specializing in 2D technical drafting, 3D parametric assembly modeling, and quality control metrology. Offering hands-on engineering fitter expertise and solid training in ISO standards and fits/tolerances.
       </p>
       <div class="hero-ctas">
         <a href="#sandbox" class="btn btn-primary">Try Drafting Sandbox</a>
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="hero-canvas-side">
-      <div class="canvas-hint">3D V8 CAR ENGINE [DRAG TO ROTATE / SCROLL TO ZOOM]</div>
+      <div class="canvas-hint">[VIEWPORT: 3D V8 CAD SECTION VIEW]</div>
       <div id="canvas3d-container"></div>
     </div>
   </section>
@@ -83,24 +83,24 @@
             <td class="value">New Delhi, India</td>
           </tr>
           <tr>
-            <td class="label">D.O.B.</td>
-            <td class="value">28 / 07 / 2000</td>
-          </tr>
-          <tr>
-            <td class="label">LANGUAGES</td>
-            <td class="value">English, Hindi</td>
-          </tr>
-          <tr>
-            <td class="label">FATHER'S NAME</td>
-            <td class="value">Shyam Singh</td>
-          </tr>
-          <tr>
             <td class="label">PRIMARY CAD</td>
-            <td class="value">SolidWorks, AutoCAD</td>
+            <td class="value">SolidWorks, AutoCAD Mechanical</td>
+          </tr>
+          <tr>
+            <td class="label">STANDARDS</td>
+            <td class="value">ISO 2768-m (General Tolerances), GD&amp;T</td>
+          </tr>
+          <tr>
+            <td class="label">METROLOGY</td>
+            <td class="value">Vernier Calipers, Micrometers, Height Gauges</td>
+          </tr>
+          <tr>
+            <td class="label">DRAFTING CODE</td>
+            <td class="value">ASME Y14.5m Compliant</td>
           </tr>
           <tr>
             <td class="label">OTHER SUITES</td>
-            <td class="value">Adobe Illustrator, Canva, MS Office</td>
+            <td class="value">Adobe Illustrator (Vector), Canva, MS Office</td>
           </tr>
         </table>
       </div>
@@ -398,11 +398,17 @@
         <div class="sandbox-canvas-pane">
           <canvas id="drafting-canvas"></canvas>
           
-          <!-- Drawing Stats Display -->
+          <!-- AutoCAD Style Command Prompt Terminal -->
           <div class="sandbox-status-bar">
-            <div>TOOL: <span id="active-tool">SELECT</span></div>
-            <div>ORTHO: <span id="ortho-status">OFF</span></div>
-            <div>COORDINATES: <span id="active-coords">X: 0.00, Y: 0.00</span></div>
+            <div class="terminal-history" id="terminal-history">
+              <div>AutoCAD Web Console initialized. Ready.</div>
+            </div>
+            <div class="terminal-input-line">
+              <span class="prompt">Command:</span>
+              <span id="active-command-text">SELECT</span>
+              <span class="coords-display" id="active-coords">X: 0.00, Y: 0.00</span>
+              <span class="ortho-display">ORTHO: <span id="ortho-status">OFF</span></span>
+            </div>
           </div>
         </div>
       </div>
