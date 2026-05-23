@@ -4,12 +4,14 @@
 // THEME SWITCHER LOGIC (Dark / Light Mode)
 // -----------------------------------------------------------------------------
 const themeToggle = document.getElementById('theme-toggle');
-let isLightMode = false;
+let isLightMode = true;
 
 // Read cached theme preference
-if (localStorage.getItem('theme') === 'light') {
+if (localStorage.getItem('theme') === 'dark') {
+  document.body.classList.remove('light-mode');
+  isLightMode = false;
+} else {
   document.body.classList.add('light-mode');
-  isLightMode = true;
 }
 
 themeToggle.addEventListener('click', () => {
